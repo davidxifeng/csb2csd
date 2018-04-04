@@ -1,0 +1,2 @@
+# csb2csd
+把CocosStudio输出的csb文件转换成可以继续编辑的csd源文件
