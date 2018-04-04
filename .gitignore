@@ -1,3 +1,6 @@
+*.csd
+
+
 # Compiled Lua sources
 luac.out
 

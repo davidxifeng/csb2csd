@@ -1,0 +1,496 @@
+// 当初cocos团队还没有放出fbs的方案文件，
+// 这份文件是我从cocos2d-x C++源码中“逆向”而来的，很辛苦的体力活 ;-)
+// 工具中用到的app.bfbs文件可以用这个命令获得：	flatc -o . --binary --schema app.fbs
+// 需要安装flatc编译器，参考 flatbuffers官网。
+// david feng Mon 20:01 Jun 20 2016
+
+
+namespace flatbuffers;
+
+table CSParseBinary {
+  version       : string;
+  textures      : [string];
+  texturePngs   : [string];
+  nodeTree      : NodeTree;
+  action        : NodeAction;
+  animationList : [AnimationInfo];
+}
+
+
+table NodeTree {
+  classname       : string;
+  children        : [NodeTree];
+  options         : Options;
+  customClassName : string;
+}
+
+table Options {
+  data : ButtonOptions; // dynamic
+}
+
+
+table WidgetOptions {
+  Name            : string;
+  ActionTag       : int;
+  rotationSkew    : RotationSkew;
+  zOrder          : int;
+  VisibleForFrame : bool = true;
+  alpha           : ubyte = 255;
+  Tag             : int;
+  position        : Position;
+  scale           : Scale;
+  anchorPoint     : AnchorPoint;
+  color           : Color;
+  size            : FlatSize;
+  flipX           : ubyte;
+  flipY           : ubyte;
+  ignoreSize      : bool;
+  TouchEnable     : bool;
+  FrameEvent      : string;
+  UserData        : string;
+  CallBackType    : string;
+  CallBackName    : string;
+  layoutComponent : LayoutComponentTable;
+}
+
+table LayoutComponentTable {
+  PositionXPercentEnabled  : ubyte;
+  PositionYPercentEnabled  : ubyte;
+  PositionXPercent         : float;
+  PositionYPercent         : float;
+  SizeXPercentEnable       : ubyte;
+  SizeYPercentEnable       : ubyte;
+  SizeXPercent             : float;
+  SizeYPercent             : float;
+  StretchHorizontalEnabled : ubyte;
+  StretchVerticalEnabled   : ubyte;
+  HorizontalEdge           : string;
+  VerticalEdge             : string;
+  LeftMargin               : float;
+  RightMargin              : float;
+  TopMargin                : float;
+  BottomMargin             : float;
+
+}
+
+table SingleNodeOptions {
+  nodeOptions : WidgetOptions;
+}
+
+table SpriteOptions {
+  nodeOptions : WidgetOptions;
+  FileData    : ResourceData;
+  BlendFunc   : BlendFunc;
+
+}
+
+table ParticleSystemOptions {
+  nodeOptions : WidgetOptions;
+  FileData    : ResourceData;
+  BlendFunc   : BlendFunc;
+
+}
+
+table GameMapOptions {
+  nodeOptions  : WidgetOptions;
+  fileNameData : ResourceData;
+}
+
+table ButtonOptions {
+   widgetOptions    : WidgetOptions;
+   normalData       : ResourceData;
+   pressedData      : ResourceData;
+   disabledData     : ResourceData;
+   fontResource     : ResourceData;
+   ButtonText       : string;
+   FontName         : string;
+   FontSize         : int;
+   textColor        : Color;
+   capInsets        : CapInsets;
+   scale9Size       : FlatSize;
+   Scale9Enable     : bool;
+   DisplayState     : bool = true;
+   OutlineEnabled   : bool;
+   outlineColor     : Color;
+   OutlineSize      : int = 1;
+   ShadowEnabled    : bool;
+   ShadowColor      : Color;
+   ShadowOffsetX    : float = 2;
+   ShadowOffsetY    : float = -2;
+   ShadowBlurRadius : int;
+   IsLocalized      : bool;
+}
+
+table CheckBoxOptions {
+  widgetOptions       : WidgetOptions;
+  NormalBackFileData  : ResourceData;
+  PressedBackFileData : ResourceData;
+  NodeNormalFileData  : ResourceData;
+  DisableBackFileData : ResourceData;
+  NodeDisableFileData : ResourceData;
+  CheckedState        : bool = true;
+  DisplayState        : bool = true;
+
+}
+
+table ImageViewOptions {
+  nodeOptions   : WidgetOptions;
+  fileNameData  : ResourceData;
+  capInsets     : CapInsets;
+  scale9Size    : FlatSize;
+  Scale9Enabled : bool;
+
+}
+
+table TextAtlasOptions {
+  widgetOptions   : WidgetOptions;
+  charMapFileData : ResourceData;
+  LabelText       : string;
+  StartChar       : string;
+  CharWidth       : int;
+  CharHeight      : int;
+
+}
+
+table TextBMFontOptions {
+  widgetOptions : WidgetOptions;
+  fileNameData  : ResourceData;
+  LabelText     : string;
+  isLocalized   : bool;
+}
+
+table TextOptions {
+  widgetOptions    : WidgetOptions;
+  FontResource     : ResourceData;
+  FontName         : string;
+  FontSize         : int;
+  LabelText        : string;
+  areaWidth        : int;
+  areaHeight       : int;
+  hAlignment       : int;
+  vAlignment       : int;
+  touchScaleEnable : bool;
+  isCustomSize     : bool;
+  OutlineEnabled   : bool;
+  OutlineColor     : Color;
+  OutlineSize      : int = 1;
+  ShadowEnabled    : bool;
+  ShadowColor      : Color;
+  ShadowOffsetX    : float = 2;
+  ShadowOffsetY    : float = -2;
+  shadowBlurRadius : int;
+  IsLocalized      : bool;
+}
+
+table TextFieldOptions {
+  widgetOptions     : WidgetOptions;
+  fontResource      : ResourceData;
+  FontName          : string;
+  FontSize          : int;
+  LabelText         : string;
+  PlaceHolderText   : string;
+  PasswordEnable    : bool;
+  PasswordStyleText : string;
+  MaxLengthEnable   : bool;
+  MaxLengthText     : int;
+
+  areaWidth         : int; // not used
+  areaHeight        : int; // not used
+
+  IsCustomSize      : bool;
+  isLocalized       : bool; // not used
+}
+
+
+table LoadingBarOptions {
+  widgetOptions : WidgetOptions;
+  textureData   : ResourceData;
+  ProgressInfo  : int = 80;
+  direction     : int;
+}
+
+table SliderOptions {
+  widgetOptions    : WidgetOptions;
+  barFileNameData  : ResourceData;
+  ballNormalData   : ResourceData;
+  ballPressedData  : ResourceData;
+  ballDisabledData : ResourceData;
+  progressBarData  : ResourceData;
+  percent          : int = 50;
+  displaystate     : ubyte = 1;
+}
+
+table PanelOptions {
+  widgetOptions  : WidgetOptions;
+  FileData       : ResourceData;
+  ClipAble       : bool;
+  SingleColor    : Color;
+  FirstColor     : Color;
+  EndColor       : Color;
+  ComboBoxIndex  : int;
+  BackColorAlpha : ubyte = 255;
+  ColorVector    : ColorVector;
+  capInsets      : CapInsets;
+  scale9Size     : FlatSize;
+  Scale9Enable   : bool;
+}
+
+table ScrollViewOptions {
+  widgetOptions         : WidgetOptions;
+  FileData              : ResourceData;
+  ClipAble              : bool;
+  SingleColor           : Color;
+  FirstColor            : Color;
+  EndColor              : Color;
+  ComboBoxIndex         : int;
+  BackColorAlpha        : ubyte = 255;
+  ColorVector           : ColorVector;
+  capInsets             : CapInsets;
+  scale9Size            : FlatSize;
+  Scale9Enable          : bool;
+  InnerNodeSize         : FlatSize;
+  direction             : int;
+  IsBounceEnabled       : bool;
+  scrollbarEnabeld      : bool = true;
+  scrollbarAutoHide     : bool = true;
+  scrollbarAutoHideTime : float = 0.2;
+}
+
+table PageViewOptions {
+  widgetOptions  : WidgetOptions;
+  FileData       : ResourceData;
+  ClipAble       : bool;
+  SingleColor    : Color;
+  FirstColor     : Color;
+  EndColor       : Color;
+  ComboBoxIndex  : int;
+  BackColorAlpha : ubyte = 255;
+  ColorVector    : ColorVector;
+  capInsets      : CapInsets;
+  scale9Size     : FlatSize;
+  Scale9Enable   : bool;
+}
+
+table ListViewOptions {
+  widgetOptions   : WidgetOptions;
+  FileData        : ResourceData;
+  ClipAble        : bool;
+  SingleColor     : Color;
+  FirstColor      : Color;
+  EndColor        : Color;
+  ComboBoxIndex   : int; // color type 无/纯色/渐变
+  BackColorAlpha  : ubyte = 255;
+  ColorVector     : ColorVector;
+  capInsets       : CapInsets;
+  scale9Size      : FlatSize;
+  Scale9Enable    : bool;
+  innerSize       : FlatSize;
+  not_used        : int;
+  IsBounceEnabled : bool;
+  ItemMargin      : int;
+  DirectionType   : string;
+  HorizontalType  : string;
+  VerticalType    : string;
+}
+
+table ProjectNodeOptions {
+  nodeOptions      : WidgetOptions;
+  fileName         : string;
+  InnerActionSpeed : float;
+}
+
+table ComponentOptions {
+  nodeOptions     : WidgetOptions;
+  type            : string;
+  comAudioOptions : ComAudioOptions;
+}
+
+table ComAudioOptions {
+  nodeOptions  : WidgetOptions;
+  name         : string;
+  enabled      : ubyte;
+  loop         : ubyte;
+  volume       : int;
+  fileNameData : ResourceData;
+}
+
+table AnimationInfo {
+  name       : string;
+  startIndex : int;
+  endIndex   : int;
+}
+
+
+table NodeAction {
+  duration             : int;
+  speed                : float;
+  timeLines            : [TimeLine];
+  currentAnimationName : string;
+}
+
+table TimeLine {
+  property  : string;
+  actionTag : int;
+  frames    : [Frame];
+}
+
+table Frame {
+  PointFrame       : PointFrame;
+  ScaleFrame       : ScaleFrame;
+  ColorFrame       : ColorFrame;
+  TextureFrame     : TextureFrame;
+  EventFrame       : EventFrame;
+  IntFrame         : IntFrame;
+  BoolFrame        : BoolFrame;
+  InnerActionFrame : InnerActionFrame;
+  BlendFrame       : BlendFrame;
+}
+
+table PointFrame {
+  frameIndex : int;
+  tween      : bool = true;
+  position   : Position;
+  easingData : EasingData;
+}
+
+table ScaleFrame {
+  frameIndex : int;
+  tween      : bool = true;
+  scale      : Scale;
+  easingData : EasingData;
+}
+
+
+table ColorFrame {
+  frameIndex : int;
+  tween      : bool = true;
+  color      : Color;
+  easingData : EasingData;
+}
+
+table TextureFrame {
+  frameIndex  : int;
+  tween       : bool = true;
+  textureFile : ResourceData;
+  easingData  : EasingData;
+}
+
+table EventFrame {
+  frameIndex : int;
+  tween      : bool = true;
+  value      : string;
+  easingData : EasingData;
+}
+
+
+table IntFrame {
+  frameIndex : int;
+  tween      : bool = true;
+  value      : int;
+  easingData : EasingData;
+}
+
+table BoolFrame {
+  frameIndex : int;
+  tween      : bool = true;
+  value      : bool = true;
+  easingData : EasingData;
+}
+
+table InnerActionFrame {
+  frameIndex           : int;
+  tween                : bool = true;
+  innerActionType      : int;
+  currentAnimationName : string;
+  singleFrameIndex     : int;
+  easingData           : EasingData;
+}
+
+table EasingData {
+  Type   : int = -1;
+  Points : [Position];
+}
+
+struct RotationSkew {
+  RotationSkewX : float;
+  RotationSkewY : float;
+}
+
+struct Position {
+  X : float;
+  Y : float;
+}
+
+struct Scale {
+  ScaleX : float;
+  ScaleY : float;
+}
+
+struct AnchorPoint {
+  ScaleX : float;
+  ScaleY : float;
+}
+
+struct Color {
+  A : ubyte;
+  R : ubyte;
+  G : ubyte;
+  B : ubyte;
+}
+
+struct ColorVector {
+  ScaleX : float;
+  ScaleY : float;
+}
+
+struct FlatSize {
+  X : float;
+  Y : float;
+}
+
+struct CapInsets {
+  Scale9OriginX : float;
+  Scale9OriginY : float;
+  Scale9Width   : float;
+  Scale9Height  : float;
+}
+
+struct BlendFunc {
+  Src : int;
+  Dst : int;
+}
+
+
+table ResourceData {
+  Path  : string;
+  Plist : string;
+  Type  : int;
+}
+
+table BlendFrame {
+  frameIndex : int;
+  tween      : bool = true;
+  blendFunc  : BlendFunc;
+  easingData : EasingData;
+}
+
+
+root_type CSParseBinary;
+
+// merge from another source file
+
+table CSArmatureNodeOption {
+  nodeOptions          : WidgetOptions;
+  FileData             : ResourceItemData;
+  IsLoop               : bool;
+  IsAutoPlay           : bool;
+  CurrentAnimationName : string;
+}
+
+table ResourceItemData {
+  type : int;
+  path : string;
+}
+
+file_extension "csb";
+
