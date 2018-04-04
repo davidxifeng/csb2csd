@@ -2,6 +2,14 @@
 把CocosStudio输出的csb文件转换成可以继续编辑的csd源文件
 
 
+# 使用说明
+
+```sh
+lua lily.lua test/TestAnimation.csb
+./lily.lua 1.csb 2.csb ...
+```
+
+
 注意：工具用到了Lua的flatbuffers库，链接为：
 
 https://github.com/DavidFeng/lua-flatbuffers
